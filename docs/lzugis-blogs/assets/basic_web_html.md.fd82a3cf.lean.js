@@ -1,0 +1,1 @@
+import{_ as s,o as l,c as a,O as t}from"./chunks/framework.ec4390fa.js";const d=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"basic/web/html.md","filePath":"basic/web/html.md"}'),o={name:"basic/web/html.md"},n=t("",57),e=[n];function p(c,r,i,F,D,h){return l(),a("div",null,e)}const g=s(o,[["render",p]]);export{d as __pageData,g as default};

@@ -1,0 +1,1 @@
+import{_ as s,o as t,c as a,a as e}from"./app.cb5ee193.js";const h=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"basic/gis/index.md"}'),i={name:"basic/gis/index.md"},c=e("",2),o=[c];function l(_,r,n,d,p,g){return t(),a("div",null,o)}const u=s(i,[["render",l]]);export{h as __pageData,u as default};
