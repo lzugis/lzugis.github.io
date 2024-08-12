@@ -36,8 +36,8 @@
     <div id="map" class="map">
       <div id="location"></div>
       <div class="tool">
-        <button id="amap">高德</button>
-        <button id="bdmap">百度</button>
+        <a id="amap">高德</button>
+        <a id="bdmap">百度</button>
       </div>
     </div>
     <script src="https://lbs.sf-express.com/api/map?v=3.0&ak=554e42802f604c35b8afa2de864c55cb"></script>
@@ -59,6 +59,9 @@
           zoom: 15,
         });
         center = [longitude, latitude];
+        new SFMap.Marker({
+            color: '#ff0000',
+        }).setLngLat([longitude, latitude]).addTo(map);
       }
 
       function getMapScheme(from, to, mapType = "gaode") {
@@ -122,11 +125,9 @@
         const from = { name: '我的位置', longitude: center[0], latitude: center[1] }; // 出发地，不传则默认当前位置
         const to = { name: '御景湾', longitude: 113.87486718701842, latitude:22.562459090345357 }; // address：目的地
 
-        document.getElementById("amap").onclick = () => {
-          const gaodeUrl = getMapScheme(from, to, "gaode");
-          const baiduUrl = getMapScheme(from, to, "baidu");
-        };
-        document.getElementById("bdmap").onclick = () => {};
+
+        document.getElementById("amap").setAttribute('href', getMapScheme(from, to, "gaode"))
+        document.getElementById("bdmap").setAttribute('href', getMapScheme(from, to, "baidu"))
       });
     </script>
   </body>
