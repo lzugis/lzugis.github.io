@@ -125,9 +125,12 @@
         const from = { name: '我的位置', longitude: center[0], latitude: center[1] }; // 出发地，不传则默认当前位置
         const to = { name: '御景湾', longitude: 113.87486718701842, latitude:22.562459090345357 }; // address：目的地
 
-
-        document.getElementById("amap").setAttribute('href', getMapScheme(from, to, "gaode"))
-        document.getElementById("bdmap").setAttribute('href', getMapScheme(from, to, "baidu"))
+        const gdUrl = getMapScheme(from, to, "gaode")
+        const bdUrl = getMapScheme(from, to, "baidu")
+        document.getElementById("location").innerHTML =
+            `${gdUrl}<br>${bdUrl}`;
+        document.getElementById("amap").setAttribute('href', gdUrl)
+        document.getElementById("bdmap").setAttribute('href', bdUrl)
       });
     </script>
   </body>
