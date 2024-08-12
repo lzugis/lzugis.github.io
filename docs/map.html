@@ -1,0 +1,133 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+      .tool {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 9;
+      }
+      #location {
+        position: absolute;
+        bottom: 1rem;
+        left: 1rem;
+        z-index: 9;
+        padding: 0.3rem 1rem;
+        background-color: white;
+        width: calc(100% - 4rem);
+        text-align: center;
+        border-radius: 0.3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map">
+      <div id="location"></div>
+      <div class="tool">
+        <button id="amap">高德</button>
+        <button id="bdmap">百度</button>
+      </div>
+    </div>
+    <script src="https://lbs.sf-express.com/api/map?v=3.0&ak=554e42802f604c35b8afa2de864c55cb"></script>
+    <script>
+      const map = new SFMap.Map({
+        container: "map",
+        center: [114.06705183665042, 22.65447650819611],
+        zoom: 3,
+      });
+
+      let center = [];
+
+      function showPosition(position) {
+        const { latitude, longitude } = position.coords;
+        document.getElementById("location").innerHTML =
+          "Latitude: " + latitude + ", Longitude: " + longitude;
+        map.flyTo({
+          center: [longitude, latitude],
+          zoom: 15,
+        });
+        center = [longitude, latitude];
+      }
+
+      function getMapScheme(from, to, mapType = "gaode") {
+        const u = navigator.userAgent;
+        const isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1; //android终端
+        const andriodBaidu = (to) => {
+          return `bdapp://map/direction?destination=name:${to.name}|latlng:${to.latitude},${to.longitude}&coord_type=gcj02&mode=driving&src=andr.jianghu.jianhao`;
+        };
+        const iOSBaidu = (to) => {
+          return `baidumap://map/direction?destination=name:${to.name}|latlng:${to.latitude},${to.longitude}&coord_type=gcj02&mode=driving&src=ios.jianghu.jianhao`;
+        };
+        const andriodGaode = (to) => {
+          return `amapuri://route/plan/?sourceApplication=mhc&dlat=${to.latitude}&dlon=${to.longitude}&dname=${to.name}&dev=0&t=0`;
+        };
+        const iOSGaode = (to) => {
+          return `iosamap://path?sourceApplication=mhc&dlat=${to.latitude}&dlon=${to.longitude}&dname=${to.name}&dev=0&t=0`;
+        };
+        if (mapType == "baidu") {
+          if (isAndroid) {
+            return andriodBaidu(to);
+          } else {
+            return iOSBaidu(to);
+          }
+        } else if (mapType == "gaode") {
+          if (isAndroid) {
+            return andriodGaode(to);
+          } else {
+            return iOSGaode(to);
+          }
+        }
+      }
+
+      function showError(error) {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            document.getElementById("location").innerHTML =
+              "User denied the request for Geolocation.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            document.getElementById("location").innerHTML =
+              "Location information is unavailable.";
+            break;
+          case error.TIMEOUT:
+            document.getElementById("location").innerHTML =
+              "The request to get user location timed out.";
+            break;
+          case error.UNKNOWN_ERROR:
+            document.getElementById("location").innerHTML =
+              "An unknown error occurred.";
+            break;
+        }
+      }
+      map.on("load", () => {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+          document.getElementById("location").innerHTML =
+            "Geolocation is not supported by this browser.";
+        }
+
+        const from = { name: '我的位置', longitude: center[0], latitude: center[1] }; // 出发地，不传则默认当前位置
+        const to = { name: '御景湾', longitude: 113.87486718701842, latitude:22.562459090345357 }; // address：目的地
+
+        document.getElementById("amap").onclick = () => {
+          const gaodeUrl = getMapScheme(from, to, "gaode");
+          const baiduUrl = getMapScheme(from, to, "baidu");
+        };
+        document.getElementById("bdmap").onclick = () => {};
+      });
+    </script>
+  </body>
+</html>
