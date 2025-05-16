@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIS开发专家个人主页</title>
+  <style>
+    /* 全局样式 */
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --light-color: #ecf0f1;
+      --dark-color: #2c3e50;
+      --text-color: #333;
+      --section-padding: 60px 0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    section {
+      padding: var(--section-padding);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin-bottom: 20px;
+      color: var(--dark-color);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 60px;
+      background-color: var(--primary-color);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    h4 {
+      font-size: 1.2rem;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    ul {
+      list-style-type: none;
+      margin-bottom: 15px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* 导航栏 */
+    .navbar {
+      background-color: var(--dark-color);
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+    }
+
+    .nav-links li {
+      margin-left: 20px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    /* 头部区域 */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      text-align: center;
+      padding: 150px 0 100px;
+    }
+
+    .hero h1 {
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    /* 关于我 */
+    .about {
+      background-color: white;
+      position: relative;
+    }
+
+    .about-content {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* 卡片网格布局 */
+    .profile-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 25px;
+      padding: 20px 0;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.5s forwards;
+      animation-delay: calc(var(--card-index) * 0.1s);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: var(--card-color, var(--primary-color));
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--card-color, var(--primary-color));
+      display: inline-block;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: var(--secondary-color);
+      font-weight: bold;
+    }
+
+    .card-content ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .card-content li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .card-content li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--card-color, var(--primary-color));
+      font-weight: bold;
+    }
+
+    /* 卡片颜色变量 */
+    .card-education {
+      --card-color: #3498db;
+    }
+
+    .card-experience {
+      --card-color: #2ecc71;
+    }
+
+    .card-achievement {
+      --card-color: #e74c3c;
+    }
+
+    .card-community {
+      --card-color: #9b59b6;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .profile-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 技能树 */
+    .skills {
+      background-color: var(--light-color);
+      padding: 60px 0;
+    }
+
+    .skills-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* 技能分类 */
+    .skill-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .skill-category {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.5s forwards;
+    }
+
+    .skill-category:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .skill-category:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .skill-category:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .skill-category:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 技能标题 */
+    .skill-header {
+      padding: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .frontend-header {
+      background-color: #3498db;
+    }
+
+    .gis-header {
+      background-color: #2ecc71;
+    }
+
+    .webgis-header {
+      background-color: #e74c3c;
+    }
+
+    .skill-header-icon {
+      font-size: 2rem;
+      margin-right: 15px;
+    }
+
+    .skill-header h3 {
+      margin: 0;
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .skill-toggle {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .skill-toggle.active {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    /* 技能内容 */
+    .skill-content {
+      max-height: none;
+      opacity: 1;
+      overflow: visible;
+      padding: 20px 0;
+    }
+
+    .skill-group {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .skill-group:last-child {
+      border-bottom: none;
+    }
+
+    .skill-group h4 {
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .skill-group h4::before {
+      content: '▹';
+      color: var(--primary-color);
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    .frontend-color h4::before {
+      color: #3498db;
+    }
+
+    .gis-color h4::before {
+      color: #2ecc71;
+    }
+
+    .webgis-color h4::before {
+      color: #e74c3c;
+    }
+
+    /* 技能列表 */
+    .skill-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .skill-item {
+      background-color: var(--light-color);
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-item::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--primary-color);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .skill-item:hover::before {
+      transform: scaleX(1);
+    }
+
+    .frontend-items .skill-item::before {
+      background-color: #3498db;
+    }
+
+    .gis-items .skill-item::before {
+      background-color: #2ecc71;
+    }
+
+    .webgis-items .skill-item::before {
+      background-color: #e74c3c;
+    }
+
+    .skill-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .skill-categories {
+        grid-template-columns: 1fr;
+      }
+
+      .skill-items {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+    }
+
+    /* 服务项目 */
+    .services {
+      background-color: white;
+    }
+
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .service-category {
+      background-color: var(--light-color);
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-category h3 {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .service-item {
+      margin-bottom: 20px;
+    }
+
+    .service-item h4 {
+      color: var(--secondary-color);
+      margin-bottom: 10px;
+    }
+
+    .service-details {
+      padding-left: 20px;
+    }
+
+    .service-details p {
+      margin-bottom: 5px;
+    }
+
+    /* 页脚 */
+    .footer {
+      background-color: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    .footer p {
+      margin-bottom: 0;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--dark-color);
+        flex-direction: column;
+        padding: 20px;
+        display: none;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links li {
+        margin: 10px 0;
+      }
+
+      .hero {
+        padding: 120px 0 70px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.7rem;
+      }
+    }
+
+    /* 服务项目 - 小红书风格卡片 */
+    .services {
+      background-color: #fff9f9;
+      /* 更柔和的背景色 */
+      padding: 40px 0;
+    }
+
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      padding: 30px;
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, #ff6b6b, #ff8e8e);
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .service-card-icon {
+      font-size: 2rem;
+      margin-right: 15px;
+      color: #ff6b6b;
+    }
+
+    .service-card-title {
+      font-size: 1.4rem;
+      color: #333;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .service-card-content {
+      line-height: 1.7;
+      color: #ff6b6b;
+      font-size: 1.2rem;
+    }
+
+    .service-card-price {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ff4757;
+      margin: 20px 0 15px;
+      display: flex;
+      align-items: center;
+      display: none;
+    }
+
+    .service-card-price::before {
+      content: "¥";
+      font-size: 0.9em;
+      margin-right: 3px;
+    }
+
+    .service-card-details {
+      margin-top: 20px;
+    }
+
+    .service-card-details p {
+      margin-bottom: 12px;
+      position: relative;
+      padding-left: 25px;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .service-card-details p::before {
+      content: "•";
+      position: absolute;
+      left: 10px;
+      color: #ff6b6b;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* 小红书风格标签 */
+    .service-card-tag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ff4757;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .services-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .service-card {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo">GIS开发专家</a>
+      <div class="menu-toggle">☰</div>
+      <ul class="nav-links">
+        <li><a href="#about">关于我</a></li>
+        <li><a href="#skills">技能树</a></li>
+        <li><a href="#services">服务项目</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 头部区域 -->
+  <header class="hero">
+    <div class="container">
+      <h1>WebGIS开发专家</h1>
+      <p>10年+GIS行业经验 | 专著作者 | 技术导师 | CSDN博客专家</p>
+    </div>
+  </header>
+
+  <!-- 关于我 -->
+  <section id="about" class="about">
+    <div class="container">
+      <h2>关于我</h2>
+      <div class="about-content">
+        <div class="profile-cards">
+          <!-- 教育背景卡片 -->
+          <div class="profile-card card-education" style="--card-index: 0">
+            <span class="card-icon">🎓</span>
+            <h3 class="card-title">教育背景</h3>
+            <div class="card-content">
+              <ul>
+                <li>兰州大学 GIS专业</li>
+                <li>地理信息系统（GIS）专业方向</li>
+                <li>系统掌握GIS理论知识与实践技能</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 工作经验卡片 -->
+          <div class="profile-card card-experience" style="--card-index: 1">
+            <span class="card-icon">💼</span>
+            <h3 class="card-title">专业经验</h3>
+            <div class="card-content">
+              <ul>
+                <li>GIS行业、WebGIS开发10年+工作经验</li>
+                <li>丰图科技技术导师</li>
+                <li>资深前端开发工程师</li>
+                <li>多个大型GIS项目架构设计经验</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 技术著作卡片 -->
+          <div class="profile-card card-achievement" style="--card-index: 2">
+            <span class="card-icon">📚</span>
+            <h3 class="card-title">技术著作</h3>
+            <div class="card-content">
+              <ul>
+                <li>《WebGIS开发从入门到实践》作者</li>
+                <li>《开源WEBGIS开发教程》视频课程作者</li>
+                <li>多篇技术文章发表</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 社区贡献卡片 -->
+          <div class="profile-card card-community" style="--card-index: 3">
+            <span class="card-icon">🌟</span>
+            <h3 class="card-title">社区贡献</h3>
+            <div class="card-content">
+              <ul>
+                <li>CSDN博客专家</li>
+                <li>GIS领域优质作者</li>
+                <li>百万访问量技术博主</li>
+                <li>CSDN讲堂、领绿教育签约讲师</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 技能树 -->
+  <section id="skills" class="skills">
+    <div class="container">
+      <h2>技能树</h2>
+      <div class="skills-container">
+        <div class="skill-categories">
+          <!-- 前端技能 -->
+          <div class="skill-category">
+            <div class="skill-header frontend-header">
+              <span class="skill-header-icon">💻</span>
+              <h3>前端开发</h3>
+            </div>
+            <div class="skill-content frontend-color">
+              <!-- 基础 -->
+              <div class="skill-group">
+                <h4>基础</h4>
+                <div class="skill-items frontend-items">
+                  <div class="skill-item">HTML</div>
+                  <div class="skill-item">CSS</div>
+                  <div class="skill-item">JavaScript</div>
+                  <div class="skill-item">网络</div>
+                </div>
+              </div>
+
+              <!-- 框架 -->
+              <div class="skill-group">
+                <h4>框架</h4>
+                <div class="skill-items frontend-items">
+                  <div class="skill-item">Vue</div>
+                  <div class="skill-item">React</div>
+                  <div class="skill-item">Astro</div>
+                  <div class="skill-item">Svelte</div>
+                </div>
+              </div>
+
+              <!-- 跨端 -->
+              <div class="skill-group">
+                <h4>跨端</h4>
+                <div class="skill-items frontend-items">
+                  <div class="skill-item">uni-app</div>
+                  <div class="skill-item">H5</div>
+                  <div class="skill-item">小程序</div>
+                  <div class="skill-item">响应式</div>
+                  <div class="skill-item">大屏可视化</div>
+                </div>
+              </div>
+
+              <!-- 后端 -->
+              <div class="skill-group">
+                <h4>后端</h4>
+                <div class="skill-items frontend-items">
+                  <div class="skill-item">Node.js</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GIS技能 -->
+          <div class="skill-category">
+            <div class="skill-header gis-header">
+              <span class="skill-header-icon">🌍</span>
+              <h3>GIS</h3>
+            </div>
+            <div class="skill-content gis-color">
+              <!-- 软件 -->
+              <div class="skill-group">
+                <h4>软件</h4>
+                <div class="skill-items gis-items">
+                  <div class="skill-item">QGIS</div>
+                  <div class="skill-item">Geoserver</div>
+                  <div class="skill-item">Arcmap</div>
+                  <div class="skill-item">Arcgis Server</div>
+                  <div class="skill-item">PostGIS</div>
+                  <div class="skill-item">MySpatial</div>
+                </div>
+              </div>
+
+              <!-- 基础 -->
+              <div class="skill-group">
+                <h4>基础</h4>
+                <div class="skill-items gis-items">
+                  <div class="skill-item">概念与原理</div>
+                  <div class="skill-item">坐标与投影</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WebGIS技能 -->
+          <div class="skill-category">
+            <div class="skill-header webgis-header">
+              <span class="skill-header-icon">🌐</span>
+              <h3>WebGIS</h3>
+            </div>
+            <div class="skill-content webgis-color">
+              <!-- 框架 -->
+              <div class="skill-group">
+                <h4>框架</h4>
+                <div class="skill-items webgis-items">
+                  <div class="skill-item">Leaflet</div>
+                  <div class="skill-item">Openlayers</div>
+                  <div class="skill-item">MapboxGL</div>
+                  <div class="skill-item">Ceisum</div>
+                  <div class="skill-item">Geotools</div>
+                  <div class="skill-item">Proj4</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 服务项目 -->
+  <section id="services" class="services">
+    <div class="container">
+      <h2 style="margin-bottom:40px;font-size:2rem;color:#333;">服务项目</h2>
+      <div class="services-container">
+        <!-- 1v1答疑 -->
+        <div class="service-card">
+          <div class="service-card-tag">🔥 热门</div>
+          <div class="service-card-header">
+            <span class="service-card-icon">💬</span>
+            <h3 class="service-card-title">1v1技术答疑</h3>
+          </div>
+          <div class="service-card-content">
+            针对您的具体问题提供专业解答和技术指导
+          </div>
+          <div class="service-card-price">299/小时</div>
+          <div class="service-card-details">
+            <p>形式：电话/视频/线上会议</p>
+            <p>内容：技术答疑、远程解决问题</p>
+            <p>时间：工作日晚8点后或节假日</p>
+          </div>
+        </div>
+
+        <!-- 1v1辅导 -->
+        <div class="service-card">
+          <div class="service-card-tag">👍 推荐</div>
+          <div class="service-card-header">
+            <span class="service-card-icon">👨‍🏫</span>
+            <h3 class="service-card-title">1v1辅导培训</h3>
+          </div>
+          <div class="service-card-content">
+            系统性的学习计划和定期进度检查
+          </div>
+          <div class="service-card-price">
+            199/小时<span style="font-size: 14px;">（8节课以上享8折优惠）</span>
+          </div>
+          <div class="service-card-details">
+            <p>形式：定期线上会议</p>
+            <p>目标：完成一个完整项目</p>
+            <p>时间：工作日晚8点后或节假日</p>
+          </div>
+        </div>
+
+        <!-- 企业培训 -->
+        <div class="service-card">
+          <div class="service-card-tag">👍 推荐</div>
+          <div class="service-card-header">
+            <span class="service-card-icon">🏢</span>
+            <h3 class="service-card-title">企业技术培训</h3>
+          </div>
+          <div class="service-card-content">
+            为企业团队提供专业的技术能力提升
+          </div>
+          <div class="service-card-price">799/小时</div>
+          <div class="service-card-details">
+            <p>每天8小时(≥2天)</p>
+            <p>内容：GIS/WebGIS相关技术</p>
+            <p>形式：线上或线下</p>
+            <p>时间：双方协商</p>
+          </div>
+        </div>
+
+        <!-- 系统开发 -->
+        <div class="service-card">
+          <div class="service-card-tag">⌛️ 长期</div>
+          <div class="service-card-header">
+            <span class="service-card-icon">💻</span>
+            <h3 class="service-card-title">定制系统开发</h3>
+          </div>
+          <div class="service-card-content">
+            根据需求定制开发各类系统
+          </div>
+          <div class="service-card-details">
+            <p>Web系统/WebGIS系统开发</p>
+            <p>H5/小程序开发</p>
+            <p>后端服务开发</p>
+            <p>可提供源代码</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 GIS开发专家. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // 导航菜单切换
+    document.querySelector('.menu-toggle').addEventListener('click', function () {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+
+        // 在移动设备上点击导航链接后关闭菜单
+        document.querySelector('.nav-links').classList.remove('active');
+      });
+    });
+
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', function () {
+      // 卡片悬停效果增强
+      const profileCards = document.querySelectorAll('.profile-card');
+
+      profileCards.forEach(card => {
+        card.addEventListener('mousemove', function (e) {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotateX = ((y - centerY) / centerY) * -3;
+          const rotateY = ((x - centerX) / centerX) * 3;
+
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+        });
+
+        card.addEventListener('mouseleave', function () {
+          card.style.transform = '';
+          setTimeout(() => {
+            card.style.transition = 'all 0.3s ease';
+          }, 100);
+        });
+
+        card.addEventListener('mouseenter', function () {
+          card.style.transition = 'none';
+        });
+      });
+
+      // 技能项悬停效果
+      const skillItems = document.querySelectorAll('.skill-item');
+      skillItems.forEach(item => {
+        item.addEventListener('mouseenter', function () {
+          // 添加波纹效果
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          ripple.style.position = 'absolute';
+          ripple.style.top = '0';
+          ripple.style.left = '0';
+          ripple.style.width = '100%';
+          ripple.style.height = '100%';
+          ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+          ripple.style.borderRadius = '5px';
+          ripple.style.transform = 'scale(0)';
+          ripple.style.opacity = '1';
+          ripple.style.transition = 'all 0.6s ease';
+
+          item.appendChild(ripple);
+
+          setTimeout(() => {
+            ripple.style.transform = 'scale(1)';
+            ripple.style.opacity = '0';
+          }, 10);
+
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
